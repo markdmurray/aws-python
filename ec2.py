@@ -4,13 +4,14 @@ import boto3
 import socket
 import dns.resolver
 
+ec2 = boto3.client('ec2')
+
 def get_ip():
     resolver = dns.resolver.Resolver()
     resolver.nameservers = resolver.nameservers=[socket.gethostbyname('resolver1.opendns.com')]
     for rdata in resolver.query('myip.opendns.com','A'):
         return rdata
 
-ec2 = boto3.client('ec2')
 def create_key(keyname):
     #create file in users ssh directory to write contents of key
     f = open("/home/mark/.ssh/%s" % keyname, "w")
@@ -39,6 +40,20 @@ def create_ingress_rules(groupid,ipaddress):
             ToPort=22,
             CidrIp='%s/32' % ipaddress
             )
+
+def latest_ami():
+
+
+def create_instance():
+
+def port_test():
+
+
+def ssh_login():
+
+
+def terminate_instance():
+
 
 ipaddress = get_ip()
 create_security_group('test',ipaddress)
