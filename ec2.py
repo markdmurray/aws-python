@@ -34,7 +34,7 @@ def create_ingress_rules(groupid,ipaddress):
     get_ip()
     resp = ec2.authorize_security_group_ingress(
             GroupId=groupid,
-
+            IpProtocol='tcp',
             FromPort=22,
             ToPort=22,
             CidrIp='%s/32' % ipaddress
