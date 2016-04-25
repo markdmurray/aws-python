@@ -1,5 +1,4 @@
 # key pair creation
-
 import boto3
 import socket
 import dns.resolver
@@ -42,18 +41,39 @@ def create_ingress_rules(groupid,ipaddress):
             )
 
 def latest_ami():
+    resp = ec2.describe_images(
+            Owners=[
+                '137112412989',
+                ],
+            Filters=[
+                {
+                    'Name': 'name',
+                    'Values': [
+                        'amzn-ami-hvm-2016.*.x86_64-gp2',
+                        ],
+                    'Name': 'block-device-mapping.volume-type',
+                    'Values': [
+                        'gp2',
+                        ],
+                    },
+                ]
+            )
+    print(resp[0]['Images'])
 
 
-def create_instance():
 
-def port_test():
+#def create_instance():
 
-
-def ssh_login():
+#def port_test():
 
 
-def terminate_instance():
+#def ssh_login():
 
 
-ipaddress = get_ip()
-create_security_group('test',ipaddress)
+#def terminate_instance():
+
+
+#ipaddress = get_ip()
+#create_security_group('test',ipaddress)
+
+latest_ami()
