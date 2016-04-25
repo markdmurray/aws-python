@@ -41,6 +41,7 @@ def create_ingress_rules(groupid,ipaddress):
             )
 
 def latest_ami():
+    array = []
     resp = ec2.describe_images(
             Owners=[
                 '137112412989',
@@ -58,7 +59,10 @@ def latest_ami():
                     },
                 ]
             )
-    print(resp[0]['Images'])
+    output = resp['Images']
+    for x in output:
+        array.append(x['CreationDate'])
+    print(array)
 
 
 
