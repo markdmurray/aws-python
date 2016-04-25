@@ -62,7 +62,9 @@ def latest_ami():
     output = resp['Images']
     for x in output:
         array.append(x['CreationDate'])
-    print(array)
+    sorted_list = sorted(array)
+    sorted_list = sorted_list[-1]
+    print(sorted_list)
 
 
 
