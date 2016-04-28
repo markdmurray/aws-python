@@ -1,4 +1,5 @@
 # key pair creation
+#pip packages required, dnspython3
 import boto3
 import socket
 import dns.resolver
