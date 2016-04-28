@@ -51,8 +51,10 @@ def latest_ami():
                 {
                     'Name': 'name',
                     'Values': [
-                        'amzn-ami-hvm-2016.*.x86_64-gp2',
-                        ],
+                        'amzn-ami-hvm-2016*',
+                      ],
+                    },
+                {
                     'Name': 'block-device-mapping.volume-type',
                     'Values': [
                         'gp2',
@@ -62,9 +64,9 @@ def latest_ami():
             )
     output = resp['Images']
     for x in output:
-        array.append(x['CreationDate'])
+        array.append(x['Name'])
     sorted_list = sorted(array)
-    sorted_list = sorted_list[-1]
+#    sorted_list = sorted_list[-1]
     print(sorted_list)
 
 
