@@ -64,10 +64,11 @@ def latest_ami():
             )
     output = resp['Images']
     for x in output:
-        array.append(x['Name'])
+        array.append(x['ImageId'])
     sorted_list = sorted(array)
 #    sorted_list = sorted_list[-1]
-    print(sorted_list)
+    for x in sorted_list:
+        print(x.strip('"'))
 
 
 
