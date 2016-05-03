@@ -69,10 +69,20 @@ def latest_ami():
 #    sorted_list = sorted_list[-1]
     for x in sorted_list:
         print(x.strip('"'))
+        return x
 
 
 
-#def create_instance():
+def create_instance(ami_id):
+    print(ami_id)
+    ec2.run_instances(
+            ImageId=ami_id,
+            KeyName='ubu',
+            InstanceType='t2.micro',
+            MinCount=1,
+            MaxCount=1,
+            )
+
 
 #def port_test():
 
@@ -86,4 +96,5 @@ def latest_ami():
 #ipaddress = get_ip()
 #create_security_group('test',ipaddress)
 
-latest_ami()
+ami_id = latest_ami()
+create_instance(ami_id)
