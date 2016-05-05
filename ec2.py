@@ -8,19 +8,22 @@ ec2 = boto3.client('ec2')
 
 def get_ip():
     resolver = dns.resolver.Resolver()
-    resolver.nameservers = resolver.nameservers=[socket.gethostbyname('resolver1.opendns.com')]
+    resolver.nameservers=[socket.gethostbyname('resolver1.opendns.com')]
     for rdata in resolver.query('myip.opendns.com','A'):
         return rdata
 
 def create_key(keyname):
     #create file in users ssh directory to write contents of key
-    f = open("/home/mark/.ssh/%s" % keyname, "w")
+    f = open("/home/ubuntu/.ssh/%s" % keyname, "w")
     resp = ec2.create_key_pair(
         KeyName=keyname
         )
     key_contents = resp['KeyMaterial']
+    keyname = resp['KeyName']
     # write contents of key to file
     f.write(key_contents)
+    return keyname
+
 
 def create_security_group(groupname,ipaddress):
     resp = ec2.create_security_group(
@@ -30,6 +33,7 @@ def create_security_group(groupname,ipaddress):
             )
     groupid = resp['GroupId']
     create_ingress_rules(groupid,ipaddress)
+    return groupid
 
 def create_ingress_rules(groupid,ipaddress):
     get_ip()
@@ -73,14 +77,17 @@ def latest_ami():
 
 
 
-def create_instance(ami_id):
-    print(ami_id)
+def create_instance(ami_id, key, security_group):
     ec2.run_instances(
             ImageId=ami_id,
-            KeyName='ubu',
+            KeyName=key,
             InstanceType='t2.micro',
             MinCount=1,
             MaxCount=1,
+            SubnetId='subnet-abefbadc',
+            SecurityGroupIds=[
+                security_group,
+                ],
             )
 
 
@@ -97,4 +104,8 @@ def create_instance(ami_id):
 #create_security_group('test',ipaddress)
 
 ami_id = latest_ami()
-create_instance(ami_id)
+key = create_key('test5')
+#create_instance(ami_id)
+ipaddress = get_ip()
+security_group = create_security_group('test5',ipaddress)
+create_instance(ami_id, key, security_group)
