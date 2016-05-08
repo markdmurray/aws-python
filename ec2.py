@@ -99,13 +99,8 @@ def create_instance(ami_id, key, security_group):
 
 #def terminate_instance():
 
-
-#ipaddress = get_ip()
-#create_security_group('test',ipaddress)
-
 ami_id = latest_ami()
 key = create_key('test5')
-#create_instance(ami_id)
 ipaddress = get_ip()
 security_group = create_security_group('test5',ipaddress)
 create_instance(ami_id, key, security_group)
