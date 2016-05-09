@@ -3,8 +3,10 @@
 import boto3
 import socket
 import dns.resolver
+import getpass
 
 ec2 = boto3.client('ec2')
+current_user = getpass.getuser()
 
 def get_ip():
     resolver = dns.resolver.Resolver()
@@ -14,7 +16,7 @@ def get_ip():
 
 def create_key(keyname):
     #create file in users ssh directory to write contents of key
-    f = open("/home/ubuntu/.ssh/%s" % keyname, "w")
+    f = open("/home/%s/.ssh/%s" %(current_user,keyname), "w")
     resp = ec2.create_key_pair(
         KeyName=keyname
         )
