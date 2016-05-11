@@ -80,17 +80,23 @@ def latest_ami():
 
 
 def create_instance(ami_id, key, security_group):
-    ec2.run_instances(
-            ImageId=ami_id,
-            KeyName=key,
-            InstanceType='t2.micro',
-            MinCount=1,
-            MaxCount=1,
-            SubnetId='subnet-abefbadc',
-            SecurityGroupIds=[
-                security_group,
-                ],
-            )
+    resp = ec2.run_instances(
+               ImageId=ami_id,
+               KeyName=key,
+               InstanceType='t2.micro',
+               MinCount=1,
+               MaxCount=1,
+               SubnetId='subnet-abefbadc',
+               SecurityGroupIds=[
+                   security_group,
+                   ],
+               )
+    output = resp['Instances']
+    for x in output:
+        print(x['InstanceId'])
+        return x
+
+def get_public_ip():
 
 
 #def port_test():
@@ -102,7 +108,7 @@ def create_instance(ami_id, key, security_group):
 #def terminate_instance():
 
 ami_id = latest_ami()
-key = create_key('test5')
+key = create_key('test18')
 ipaddress = get_ip()
-security_group = create_security_group('test5',ipaddress)
+security_group = create_security_group('test18',ipaddress)
 create_instance(ami_id, key, security_group)
