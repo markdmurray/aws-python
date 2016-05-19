@@ -74,8 +74,7 @@ def latest_ami():
     sorted_list = sorted(array)
 #    sorted_list = sorted_list[-1]
     for x in sorted_list:
-        print(x.strip('"'))
-        return x
+        return x.strip('"')
 
 
 
@@ -93,10 +92,19 @@ def create_instance(ami_id, key, security_group):
                )
     output = resp['Instances']
     for x in output:
-        print(x['InstanceId'])
-        return x
+        return x['InstanceId']
 
-def get_public_ip():
+
+def wait_running(instance_id):
+    print(instance_id)
+    waiter = ec2.get_waiter('instance_running')
+    resp = waiter.wait(
+               InstanceIds=[
+                   instance_id,
+                   ],
+               )
+
+
 
 
 #def port_test():
@@ -108,7 +116,12 @@ def get_public_ip():
 #def terminate_instance():
 
 ami_id = latest_ami()
-key = create_key('test18')
+key = create_key('test6')
 ipaddress = get_ip()
-security_group = create_security_group('test18',ipaddress)
-create_instance(ami_id, key, security_group)
+security_group = create_security_group('test6',ipaddress)
+instance_id = create_instance(ami_id, key, security_group)
+if wait_running(instance_id) == None:
+    print('Instance %s is in the running state' % instance_id)
+else:
+    print('something happened, cloud is broken')
+
