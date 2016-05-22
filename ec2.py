@@ -94,6 +94,18 @@ def create_instance(ami_id, key, security_group):
     for x in output:
         return x['InstanceId']
 
+def create_tags(resource):
+    resp = ec2.create_tags(
+            Resources=[
+                resource,
+                ],
+            Tags=[
+                {
+                'Key': 'Environment',
+                'Value': 'ec2 dev'
+                },
+                ]
+            )
 
 def wait_running(instance_id):
     print(instance_id)
@@ -104,7 +116,17 @@ def wait_running(instance_id):
                    ],
                )
 
-
+def get_public_ip(instance_id):
+    resp = ec2.describe_instances(
+            InstanceIds=[
+                instance_id,
+                ],
+            Filters=[
+                {
+                    'Name': 'dns-name'
+                    }
+                ]
+            )
 
 
 #def port_test():
@@ -120,8 +142,14 @@ key = create_key('test6')
 ipaddress = get_ip()
 security_group = create_security_group('test6',ipaddress)
 instance_id = create_instance(ami_id, key, security_group)
+
 if wait_running(instance_id) == None:
     print('Instance %s is in the running state' % instance_id)
+    create_tags(instance_id)
+    print('created tags, checking for public ip address..')
+    ec2_public_hostname = get_public_ip(instance_id)
+
 else:
     print('something happened, cloud is broken')
+
 
