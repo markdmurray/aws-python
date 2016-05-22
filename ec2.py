@@ -4,6 +4,8 @@ import boto3
 import socket
 import dns.resolver
 import getpass
+from random import choice
+from string import ascii_uppercase
 
 ec2 = boto3.client('ec2')
 current_user = getpass.getuser()
@@ -128,6 +130,11 @@ def get_public_ip(instance_id):
                 ]
             )
 
+def random_name():
+    random_string = ''.join(choice(ascii_uppercase) for i in range(12))
+    return random_string
+
+
 
 #def port_test():
 
@@ -137,10 +144,11 @@ def get_public_ip(instance_id):
 
 #def terminate_instance():
 
+random_names = random_name()
 ami_id = latest_ami()
-key = create_key('test6')
+key = create_key(random_names)
 ipaddress = get_ip()
-security_group = create_security_group('test6',ipaddress)
+security_group = create_security_group(random_name,ipaddress)
 instance_id = create_instance(ami_id, key, security_group)
 
 if wait_running(instance_id) == None:
