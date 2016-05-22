@@ -87,7 +87,7 @@ def create_instance(ami_id, key, security_group):
                InstanceType='t2.micro',
                MinCount=1,
                MaxCount=1,
-               SubnetId='subnet-abefbadc',
+               SubnetId='subnet-20cce345',
                SecurityGroupIds=[
                    security_group,
                    ],
@@ -145,10 +145,11 @@ def random_name():
 #def terminate_instance():
 
 random_names = random_name()
+print(random_names)
 ami_id = latest_ami()
 key = create_key(random_names)
 ipaddress = get_ip()
-security_group = create_security_group(random_name,ipaddress)
+security_group = create_security_group(random_names,ipaddress)
 instance_id = create_instance(ami_id, key, security_group)
 
 if wait_running(instance_id) == None:
@@ -156,7 +157,7 @@ if wait_running(instance_id) == None:
     create_tags(instance_id)
     print('created tags, checking for public ip address..')
     ec2_public_hostname = get_public_ip(instance_id)
-    print('Public hostname is %s') % ec2_public_hostname
+    print('Public hostname is %s' % ec2_public_hostname)
 
 else:
     print('something happened, cloud is broken')
