@@ -148,6 +148,7 @@ if wait_running(instance_id) == None:
     create_tags(instance_id)
     print('created tags, checking for public ip address..')
     ec2_public_hostname = get_public_ip(instance_id)
+    print('Public hostname is %s') % ec2_public_hostname
 
 else:
     print('something happened, cloud is broken')
