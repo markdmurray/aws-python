@@ -11,7 +11,6 @@ def get_ip():
         return(rdata)
 
 def create_ingress_rules(ipaddress):
-    print(ipaddress)
     resp = ec2.authorize_security_group_ingress(
             GroupId='sg-5819dd3c',
             IpProtocol='tcp',
