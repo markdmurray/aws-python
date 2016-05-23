@@ -1,5 +1,6 @@
 # key pair creation
 #pip packages required, dnspython3
+import sys
 import boto3
 import socket
 import dns.resolver
@@ -120,44 +121,54 @@ def wait_running(instance_id):
 
 def get_public_ip(instance_id):
     resp = ec2.describe_instances(
-            InstanceIds=[
-                instance_id,
-                ],
-            Filters=[
-                {
-                    'Name': 'dns-name'
-                    }
-                ]
-            )
+        InstanceIds=[
+            instance_id,
+            ],
+        )
+
+    resp = resp['Reservations']
+
+    for x in resp:
+        x = x['Instances']
+        for y in x:
+            print(y['PublicDnsName'])
 
 def random_name():
     random_string = ''.join(choice(ascii_uppercase) for i in range(12))
     return random_string
 
-
-
+#def get_created_instances():
+#        resp = ec2.describe_instances(
+#            Filters=[
+#                {
+#                    }
+#                ],
+#            )
+#
 #def port_test():
 
 
 #def ssh_login():
 
 
-def terminate_instance(instance_id):
-    resp = ec2.terminate_instances(
-            Instance-Ids=[
-                instance-id,
-                ]
-            )
-
+#def terminate_instance(instance_id):
+#    resp = ec2.terminate_instances(
+#            Instance-Ids=[
+#                instance-id,
+#                ]
+#            )
+#
 
 random_names = random_name()
-print(random_names)
 ami_id = latest_ami()
 key = create_key(random_names)
 ipaddress = get_ip()
 security_group = create_security_group(random_names,ipaddress)
 instance_id = create_instance(ami_id, key, security_group)
 
+#if sys.argv[1] == 'terminate':
+#    terminate_instance(instance_id)
+#
 if wait_running(instance_id) == None:
     print('Instance %s is in the running state' % instance_id)
     create_tags(instance_id)
