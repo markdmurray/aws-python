@@ -142,7 +142,13 @@ def random_name():
 #def ssh_login():
 
 
-#def terminate_instance():
+def terminate_instance(instance_id):
+    resp = ec2.terminate_instances(
+            Instance-Ids=[
+                instance-id,
+                ]
+            )
+
 
 random_names = random_name()
 print(random_names)
@@ -161,5 +167,3 @@ if wait_running(instance_id) == None:
 
 else:
     print('something happened, cloud is broken')
-
-
