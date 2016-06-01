@@ -5,6 +5,7 @@ import boto3
 import socket
 import dns.resolver
 import getpass
+import time
 from random import choice
 from string import ascii_uppercase
 
@@ -131,7 +132,7 @@ def get_public_ip(instance_id):
     for x in resp:
         x = x['Instances']
         for y in x:
-            print(y['PublicDnsName'])
+            return y['PublicDnsName']
 
 def random_name():
     random_string = ''.join(choice(ascii_uppercase) for i in range(12))
@@ -173,8 +174,10 @@ if wait_running(instance_id) == None:
     print('Instance %s is in the running state' % instance_id)
     create_tags(instance_id)
     print('created tags, checking for public ip address..')
+    time.sleep(3)
     ec2_public_hostname = get_public_ip(instance_id)
     print('Public hostname is %s' % ec2_public_hostname)
+    print('key name is %s' % key)
 
 else:
     print('something happened, cloud is broken')
