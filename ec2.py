@@ -149,7 +149,11 @@ def random_name():
 #def port_test():
 
 
-#def ssh_login():
+#def ssh_login(keyname,address,user):
+#    print('Attempting to SSH into %s' % address)
+#    sleep 2
+
+
 
 
 #def terminate_instance(instance_id):
